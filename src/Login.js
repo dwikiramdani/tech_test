@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View, TextInput, CheckBox, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
-export default class App extends Component{
-  render() {
+export default () => {
     return (
       <View style={styles.container}>
         <View style={{
@@ -101,7 +100,7 @@ export default class App extends Component{
       </View>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {

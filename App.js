@@ -12,7 +12,6 @@ export default function Home() {
   const [Home, setHome] = useState(true);
   const [Cart, setCart] = useState(false);
   const [Profile, setProfile] = useState(false)
-  const [searchFieldValue, handleSearchFieldChange] = useState('');
 
 	return (
 		<View style={styles.container}>
@@ -48,8 +47,8 @@ export default function Home() {
                 flex: 0,
                 marginVertical: 10
               }}>
-                <TextInput style={styles.input} placeholder="Test"></TextInput>
-                <TextInput style={styles.input} placeholder="Test"></TextInput>
+                <TextInput style={styles.input} placeholder="Username"></TextInput>
+                <TextInput style={styles.input} placeholder="Password"></TextInput>
 
                 <View style={{
                   flex: 0, 

@@ -6,23 +6,18 @@ export const Context = createContext({});
 export const Provider = props => {
   // Initial values are obtained from the props
   const {
+    buy: initialBuy,
+    loading: initialLoading,
     shop: initialShop,
     list: initialList,
-    users: initialUsers,
-    selectedUser: initialSelectedUsers,
     children
   } = props;
 
   // Use State to keep the values
   const [shop, setShop] = useState(initialShop);
-	const [list, setList] = useState(initialList);
-  const [users, setUsers] = useState(initialUsers);
-  const [selectedUser, setSelectedUser] = useState(initialSelectedUsers);
-
-  const addNewUser = userName => {
-    const newUser = { id: new Date().getTime().toString(), name: userName };
-    setUsers(users.concat([newUser]));
-  };
+  const [list, setList] = useState(initialList);
+  const [buy, setBuy] = useState(initialBuy)
+  const [loading, setLoading] = useState(initialLoading);
 
   // Make the context object:
   const valueContext = {
@@ -34,7 +29,9 @@ export const Provider = props => {
     setUsers,
     selectedUser,
     setSelectedUser,
-    addNewUser
+    addNewUser,
+    loading,
+    setLoading
   };
 
   // pass the value in provider and return
@@ -44,15 +41,15 @@ export const Provider = props => {
 export const { Consumer } = Context;
 
 Provider.propTypes = {
-  users: PropTypes.array,
-  selectedUser: PropTypes.object,
   shop: PropTypes.array,
   list: PropTypes.array,
+  loading: PropTypes.bool,
+  buy: PropTypes.object,
 };
 
 Provider.defaultProps = {
-  users: [],
-  selectedUser: {},
   shop: [],
   list: [],
+  loading: true,
+  buy: '',
 };

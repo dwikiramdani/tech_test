@@ -214,27 +214,6 @@ export default function Home() {
                     </View>
                 </View>
 
-                {/* <View style={styles.list}>
-                  {
-                    loading ?
-                    <ActivityIndicator size='large' color='blue'/>
-                    :
-                    <FlatList
-                      data={array}
-                      keyExtractor={(item, index)=>index.toString()}
-                      renderItem={({ item }) => (
-                        <View style={{flex: 0, marginVertical: 12, marginHorizontal: 16,  flexDirection: 'row', borderWidth: 1, borderColor: '#dbdbdb'}}>
-                          <Image source = {{ uri: item.imageUrl }} style={{width:64, height: 64, borderWidth: 1}} resizeMode='contain'/>
-                          <View>
-                            <Text style={{fontWeight: 'bold', fontSize: 12}}>{item.title}</Text>
-                            <Text style={{fontWeight: 'bold', fontSize: 12}}>{item.price}</Text>
-                          </View>
-                        </View>
-                      )}
-                    />
-                  }
-                </View> */}
-
               </View>
             </Modal>
             

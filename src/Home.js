@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 const Device_Width = Dimensions.get('window').width ;
 
 export default () => {
-	// const { loading, shop } = useSwapiPeople();
 	
+	// State
 	const [shop, setShop] = useState([]);
 	const [list, setList] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -17,6 +17,7 @@ export default () => {
 	const [judul, setJudul] = useState('');
 	const [harga, setHarga] = useState(0);
 
+	// Fetch API to get array from object
   useEffect(
     () => {
       setLoading(true);
@@ -59,7 +60,7 @@ export default () => {
 			</View>
 			{/* Category List */}
 
-
+			{/* Item Shop List */}
 			<View style={styles.list}>
 				{
 					loading ?
@@ -114,7 +115,8 @@ export default () => {
 					null
         }
 			</View>
-			
+			{/* Item Shop List */}
+
     </View>
   );
 };

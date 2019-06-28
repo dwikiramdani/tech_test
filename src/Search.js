@@ -18,7 +18,7 @@ export default function Search() {
 	const [judul, setJudul] = useState('');
 	const [harga, setHarga] = useState(0);
 
-
+  // Fetch API to get available list
   useEffect(
     () => {
       setLoading(true);
@@ -37,26 +37,21 @@ export default function Search() {
 		[]
   );
 
+  // Function for live searching result
   searchFilterFunction = (text) => {    
     const newData = search.filter(item => {      
       const itemData = `${item.title.toUpperCase()}   
       ${item.price.toUpperCase()}`;
-      
        const textData = text.toUpperCase();
-        
        return itemData.indexOf(textData) > -1;    
     });
-    
     setArray(newData);  
   };
   
-  
 	return (
 
+    // Search bar for input parameter
     <View style={styles.container}>
-
-      
-
       <View style={{
         flex: 0,
         flexDirection: 'row'
@@ -88,6 +83,7 @@ export default function Search() {
           </View>
       </View>
 
+      {/* Display result for search */}
       <View style={styles.list}>
 				{
 					loading ?
@@ -145,6 +141,7 @@ export default function Search() {
 					null
         }
 			</View>
+      {/* Display result for search */}
 
     </View>
   
@@ -176,6 +173,5 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 64,
     alignItems: 'center',
-    // justifyContent: 'center'
   }
 });

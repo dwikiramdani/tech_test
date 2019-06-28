@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {StyleSheet, Text, View, TextInput, CheckBox, TouchableOpacity, Button, Dimensions, Modal} from 'react-native';
 import Beranda from './src/Home';
+import Searching from './src/Search';
 import LoginPage from './src/Login';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import { GlobalState } from "./src/context/GlobalState";
 
 const Device_Width = Dimensions.get('window').width ;
+const Device_Height = Dimensions.get('window').height ;
 
 export default function Home() {
   const [login, setLogin] = useState(true);
@@ -12,204 +15,283 @@ export default function Home() {
   const [Home, setHome] = useState(true);
   const [Cart, setCart] = useState(false);
   const [Profile, setProfile] = useState(false)
+  const [searching, setSearching] = useState(false);
 
+  const [shop, setShop] = useState([]);
+	const [list, setList] = useState([]);
+	const [loading, setLoading] = useState(true);
+  
 	return (
 		<View style={styles.container}>
-
+      {
+      searching ?
         <Modal
-        transparent={false}
-        animationType={"fade"}
-        visible={login}
-        onRequestClose={ () => { setLogin(false) } } 
+          transparent={false}
+          animationType={"fade"}
+          visible={searching}
+          onRequestClose={()=>{setSearching(false)}}
         >
-          <View style={styles.container}>
-            <View style={{
-              flex: 0,
-              marginHorizontal: 20,
-              borderWidth: 1,
-              borderColor: '#dbdbdb',
-              borderRadius: 4,
-              marginVertical: 120,
-              bottom: 40
-            }}>
-              <Text style={{
-                flex: 0,
-                alignSelf: 'center',
-                marginTop: 20,
-                fontFamily: 'FontAwesome',
-                fontWeight: 'bold'
-              }}>
-                LOGIN
-              </Text>
-
-              {/* Form Login */}
+          <Searching />
+        </Modal>
+      :
+      <View style={{flex: 1}}>
+        
+        <Modal
+          transparent={false}
+          animationType={"fade"}
+          visible={login}
+          onRequestClose={ () => { setLogin(false) } } 
+          >
+            <View style={styles.container}>
               <View style={{
                 flex: 0,
-                marginVertical: 10
+                marginHorizontal: 20,
+                borderWidth: 1,
+                borderColor: '#dbdbdb',
+                borderRadius: 4,
+                marginVertical: 120,
+                bottom: 40
               }}>
-                <TextInput style={styles.input} placeholder="Username"></TextInput>
-                <TextInput style={styles.input} placeholder="Password"></TextInput>
+                <Text style={{
+                  flex: 0,
+                  alignSelf: 'center',
+                  marginTop: 20,
+                  fontFamily: 'FontAwesome',
+                  fontWeight: 'bold'
+                }}>
+                  LOGIN
+                </Text>
 
+                {/* Form Login */}
                 <View style={{
-                  flex: 0, 
+                  flex: 0,
+                  marginVertical: 10
+                }}>
+                  <TextInput style={styles.input} placeholder="Username"></TextInput>
+                  <TextInput style={styles.input} placeholder="Password"></TextInput>
+
+                  <View style={{
+                    flex: 0, 
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                  }}>
+                    <CheckBox
+                      style={{
+                        marginLeft: 5,
+                      }} 
+                    />
+                    <Text>Remember Me</Text>
+                    <View style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: 'flex-end',
+                      marginRight: 15
+
+                    }}>
+                      <TouchableOpacity style={{
+                        flex: 0, 
+                        backgroundColor: '#005eff',
+                        justifyContent: 'center',
+                        borderRadius: 4
+                      }}
+                        onPress={() => { setLogin(false) }}
+                      >
+                        <Text style={{
+                          textAlign: 'right',
+                          color: '#FFFFFF',
+                          marginVertical: 4,
+                          marginHorizontal: 8
+                        }}>Sign In
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+                {/* Form Login */}
+
+                <TouchableOpacity style={styles.socLogin}
+                >
+                  <Icon name='facebook' size={15} style={{color: '#FFFFFF'}}/>
+                  <Text 
+                    onPress={() => { setLogin(false) }}
+                    style={{
+                    flex: 0,
+                    color: '#FFFFFF',
+                    marginVertical: 4,
+                    marginHorizontal: 8,
+                    textAlign: 'center'
+                  }}>
+                    Sign In with Facebook
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.socLogin, {backgroundColor: '#41a8f6', marginBottom: 30}]}
+                >
+                  <Icon name='google' size={15} style={{color: '#FFFFFF'}}/>
+                  <Text 
+                    onPress={() => { setLogin(false) }}
+                    style={{
+                    flex: 0,
+                    color: '#FFFFFF',
+                    marginVertical: 4,
+                    marginHorizontal: 8,
+                    textAlign: 'center'
+                  }}>Sign In with Google
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+
+        <View style={{
+          flex: 0,
+          flexDirection: 'row'
+        }}>
+          <View style={{
+            flex: 0, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            marginLeft: 4,
+            }}>
+              <TouchableOpacity>
+                <Icon name='heart-outline' size={24}/>
+              </TouchableOpacity>
+          </View>
+          <View style={{
+              flex: 1, 
+              }}>
+                <TextInput
+                  placeholder='Pencarian'
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 20,
+                    borderColor: '#dbdbdb',
+                    height: 36,
+                    margin: 8
+                  }}
+                  onTouchStart={()=>{setSearching(true)}}
+                />
+            </View>
+        </View>
+
+        
+        <View style={{
+          flex: 1,
+        }}>
+          {
+            Home ?
+            <Beranda />
+            : Profile ?
+            <Modal
+              transparent={false}
+              animationType={"fade"}
+              visible={Profile}
+              onRequestClose={()=>{setHome(true), setProfile(false)}}
+            >
+              <View style={styles.container}>
+                <View style={{
+                  flex: 0,
                   flexDirection: 'row',
                   alignItems: 'center'
                 }}>
-                  <CheckBox
-                    style={{
-                      marginLeft: 5,
-                    }} 
-                  />
-                  <Text>Remember Me</Text>
                   <View style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: 'flex-end',
-                    marginRight: 15
-
-                  }}>
-                    <TouchableOpacity style={{
-                      flex: 0, 
-                      backgroundColor: '#005eff',
-                      justifyContent: 'center',
-                      borderRadius: 4
+                    flex: 0, 
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                    marginVertical: 8,
+                    marginHorizontal: 8,
                     }}
-                      onPress={() => { setLogin(false) }}
                     >
-                      <Text style={{
-                        textAlign: 'right',
-                        color: '#FFFFFF',
-                        marginVertical: 4,
-                        marginHorizontal: 8
-                      }}>Sign In
-                      </Text>
-                    </TouchableOpacity>
+                      <TouchableOpacity>
+                        <Icon name='arrow-left' size={16}/>
+                      </TouchableOpacity>
                   </View>
+                  <View style={{
+                      flex: 1, 
+                      }}>
+                        <Text style={{marginHorizontal: 8}}>Purchase History</Text>
+                    </View>
                 </View>
+
+                {/* <View style={styles.list}>
+                  {
+                    loading ?
+                    <ActivityIndicator size='large' color='blue'/>
+                    :
+                    <FlatList
+                      data={array}
+                      keyExtractor={(item, index)=>index.toString()}
+                      renderItem={({ item }) => (
+                        <View style={{flex: 0, marginVertical: 12, marginHorizontal: 16,  flexDirection: 'row', borderWidth: 1, borderColor: '#dbdbdb'}}>
+                          <Image source = {{ uri: item.imageUrl }} style={{width:64, height: 64, borderWidth: 1}} resizeMode='contain'/>
+                          <View>
+                            <Text style={{fontWeight: 'bold', fontSize: 12}}>{item.title}</Text>
+                            <Text style={{fontWeight: 'bold', fontSize: 12}}>{item.price}</Text>
+                          </View>
+                        </View>
+                      )}
+                    />
+                  }
+                </View> */}
+
               </View>
-              {/* Form Login */}
+            </Modal>
+            
+            :
+            null
+          }
+        </View>
 
-              <TouchableOpacity style={styles.socLogin}
-              >
-                <Icon name='facebook' size={15} style={{color: '#FFFFFF'}}/>
-                <Text 
-                  onPress={() => { setLogin(false) }}
-                  style={{
-                  flex: 0,
-                  color: '#FFFFFF',
-                  marginVertical: 4,
-                  marginHorizontal: 8,
-                  textAlign: 'center'
-                }}>
-                  Sign In with Facebook
-                </Text>
-              </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.socLogin, {backgroundColor: '#41a8f6', marginBottom: 30}]}
-              >
-                <Icon name='google' size={15} style={{color: '#FFFFFF'}}/>
-                <Text 
-                  onPress={() => { setLogin(false) }}
-                  style={{
-                  flex: 0,
-                  color: '#FFFFFF',
-                  marginVertical: 4,
-                  marginHorizontal: 8,
-                  textAlign: 'center'
-                }}>Sign In with Google
-                </Text>
+        <View style={{
+          flex: 0,
+          flexDirection: 'row'
+        }}>
+          <View style={{
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            backgroundColor: Home ? '#36c3d9' : '#FFFFFF',
+            }}>
+              <TouchableOpacity onPress={()=>{setHome(true), setProfile(false)}}>
+                <Text style={{marginVertical: 6}}>Home</Text>
               </TouchableOpacity>
             </View>
-          </View>
-        </Modal>
-
-
-      <View style={{
-        flex: 0,
-        flexDirection: 'row'
-      }}>
-        <View style={{
-          flex: 0, 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          marginLeft: 4,
-          }}>
-            <TouchableOpacity>
-              <Icon name='heart-outline' size={24}/>
-            </TouchableOpacity>
-        </View>
-        <View style={{
+          <View style={{
             flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            backgroundColor: Feed ? '#36c3d9' : '#FFFFFF',
             }}>
-              <TextInput
-                placeholder='Pencarian'
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 20,
-                  borderColor: '#dbdbdb',
-                  height: 36,
-                  margin: 8
-                }}
-              />
-          </View>
+              <TouchableOpacity>
+                <Text style={{marginVertical: 6}}>Feed</Text>
+              </TouchableOpacity>
+            </View>
+          <View style={{
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            backgroundColor: Cart ? '#36c3d9' : '#FFFFFF',
+            }}>
+              <TouchableOpacity>
+                <Text style={{marginVertical: 6}}>Cart</Text>
+              </TouchableOpacity>
+            </View>
+          <View style={{
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            backgroundColor: Profile ? '#36c3d9' : '#FFFFFF',
+            }}>
+              <TouchableOpacity onPress={()=>{setProfile(true), setHome(false)}}>
+                <Text style={{marginVertical: 6}}>Profile</Text>
+              </TouchableOpacity>
+            </View>
+        </View>
+
       </View>
-
-      {/* Content */}
-
-      <View style={{
-        flex: 1,
-      }}>
-        <Beranda />
-      </View>
-
-      {/* Content */}
-
-      <View style={{
-        flex: 0,
-        flexDirection: 'row'
-      }}>
-        <View style={{
-          flex: 1, 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          backgroundColor: Home ? '#36c3d9' : '#FFFFFF',
-          }}>
-            <TouchableOpacity>
-              <Text style={{marginVertical: 6}}>Home</Text>
-            </TouchableOpacity>
-          </View>
-        <View style={{
-          flex: 1, 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          backgroundColor: Feed ? '#36c3d9' : '#FFFFFF',
-          }}>
-            <TouchableOpacity>
-              <Text style={{marginVertical: 6}}>Feed</Text>
-            </TouchableOpacity>
-          </View>
-        <View style={{
-          flex: 1, 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          backgroundColor: Cart ? '#36c3d9' : '#FFFFFF',
-          }}>
-            <TouchableOpacity>
-              <Text style={{marginVertical: 6}}>Cart</Text>
-            </TouchableOpacity>
-          </View>
-        <View style={{
-          flex: 1, 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          backgroundColor: Profile ? '#36c3d9' : '#FFFFFF',
-          }}>
-            <TouchableOpacity>
-              <Text style={{marginVertical: 6}}>Profile</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
-
+      }
 		</View>
 	);
 }
@@ -236,5 +318,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 64,
     alignItems: 'center',
     // justifyContent: 'center'
+  },
+  list: {
+		flex: 1,
+    justifyContent: 'center',
   }
+  
 });

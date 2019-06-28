@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import {StyleSheet, Text, View, TextInput, CheckBox, TouchableOpacity, Button, ActivityIndicator, FlatList, Image} from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import {StyleSheet, Text, View, Modal, Dimensions, TouchableOpacity, Button, ActivityIndicator, FlatList, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+
+const Device_Width = Dimensions.get('window').width ;
 
 export default () => {
 	// const { loading, shop } = useSwapiPeople();
 	
 	const [shop, setShop] = useState([]);
 	const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(true);
+	const [detail, setDetail] = useState(false);
+	const [deskripsi, setDeskripsi] = useState('');
+	const [cart, setCart] = useState([]);
+	const [photo, setPhoto] = useState('');
+	const [judul, setJudul] = useState('');
+	const [harga, setHarga] = useState(0);
 
   useEffect(
     () => {
@@ -29,21 +37,6 @@ export default () => {
 
   return (
     <View style={styles.container}>
-			{/* {
-				loading ?
-				<ActivityIndicator size='large' color='blue'/>
-				:
-				<FlatList
-					data={shop}
-					keyExtractor={(item, index)=>index.toString()}
-					renderItem={({ item }) => (
-						<View style={{flex: 0}}>
-							<Text>{item.id}</Text>
-							<Image source = {{ uri: item.imageUrl }} style={{width:25, height: 25}} />
-						</View>
-					)}
-				/>
-			} */}
 
 			{/* Category List */}
 			<View style={styles.category}>
@@ -76,14 +69,52 @@ export default () => {
 						data={list}
 						keyExtractor={(item, index)=>index.toString()}
 						renderItem={({ item }) => (
-							<View style={{flex: 0, marginVertical: 12, marginHorizontal: 40, justifyContent: 'center'}}>
-								<Image source = {{ uri: item.imageUrl }} style={{width:'100%', height: 128, alignSelf: 'center', borderWidth: 1}} resizeMode='contain'/>
-								<Text style={{fontWeight: 'bold', fontSize: 24}}>{item.title}</Text>
-							</View>
+							<TouchableOpacity
+								onPress={
+									() => {
+											setDeskripsi(item.description)
+											setPhoto(item.imageUrl)
+											setJudul(item.title)
+											setHarga(item.price)
+											setDetail(true)
+									}
+								}
+							>
+								<View style={{flex: 0, marginVertical: 12, marginHorizontal: 40, justifyContent: 'center'}}>
+									<Image source = {{ uri: item.imageUrl }} style={{width:'100%', height: 128, alignSelf: 'center', borderWidth: 1}} resizeMode='contain'/>
+									<Text style={{fontWeight: 'bold', fontSize: 24}}>{item.title}</Text>
+								</View>
+							</TouchableOpacity>
 						)}
 					/>
 				}
+				{
+          detail ?
+					(
+					<Modal
+					transparent={false}
+					animationType={"fade"}
+					visible={detail}
+					onRequestClose={ () => { setDetail(false) } } >
+						<TouchableOpacity onPress={() => { setDetail(false)}} activeOpacity={1}>
+							<View style={{margin: 20}}>
+								<View style={{flex: 0, width: Device_Width, height: 160}}>
+									<Image resizeMode='contain' source = {{ uri: photo }} style={{flex: 0, height: '100%'}}/>
+								</View>
+								<View>
+									<Text style={{fontWeight: 'bold', fontSize: 12}}>{judul}</Text>
+									<Text style={{fontWeight: 'bold', fontSize: 12}}>{deskripsi}</Text>
+									<Text style={{fontWeight: 'bold', fontSize: 12}}>{harga}</Text>
+								</View>
+							</View>
+						</TouchableOpacity>
+					</Modal>
+					) 
+					:
+					null
+        }
 			</View>
+			
     </View>
   );
 };

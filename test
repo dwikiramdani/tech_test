@@ -1,0 +1,17 @@
+{
+						detail ?
+							(
+							<Modal
+							transparent={false}
+							animationType={"fade"}
+							visible={detail}
+							onRequestClose={ () => { detail(false) } >
+								<View>
+									<Image style={{width: 200, height: 200}} source = {{ uri: this.state.TempImageURL }} />
+									<Text>Test</Text>
+								</View>
+							</Modal>
+							) 
+							:
+							null
+					}

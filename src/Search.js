@@ -124,14 +124,34 @@ export default function Search() {
 					visible={detail}
 					onRequestClose={ () => { setDetail(false) } } >
 						<TouchableOpacity onPress={() => { setDetail(false)}} activeOpacity={1}>
-							<View style={{margin: 20}}>
+            <View style={{margin: 20}}>
+									<View style={{flex: 0, top: 20, flexDirection: 'row', zIndex: 5}}>
+										<TouchableOpacity style={{flex: 1, alignItems: 'flex-start'}} onPress={ () => { setDetail(false) } } >
+											<Icon name={'arrow-left'} size={20}/>
+										</TouchableOpacity>
+										<TouchableOpacity style={{flex: 1, alignItems: 'flex-end'}}>
+											<Icon name={'share-variant'} size={20} />
+										</TouchableOpacity>
+									</View>
 								<View style={{flex: 0, width: Device_Width, height: 160}}>
 									<Image resizeMode='contain' source = {{ uri: photo }} style={{flex: 0, height: '100%'}}/>
 								</View>
-								<View>
-									<Text style={{fontWeight: 'bold', fontSize: 12}}>{judul}</Text>
-									<Text style={{fontWeight: 'bold', fontSize: 12}}>{deskripsi}</Text>
-									<Text style={{fontWeight: 'bold', fontSize: 12}}>{harga}</Text>
+								<View style={{flex: 0}}>
+									<View style={{flex: 0, flexDirection: 'row', marginVertical: 4, alignItems: 'center'}}>
+										<Text style={{fontWeight: 'bold', fontSize: 12}}>{judul}</Text>
+										<TouchableOpacity style={{flex: 1, alignItems: 'flex-end'}}>
+											<Icon name={'heart'} size={20} />
+										</TouchableOpacity>
+									</View>
+									<View style={{flex:0}}>
+										<Text style={{fontWeight: 'bold', fontSize: 12}}>{deskripsi}</Text>
+									</View>
+									<View style={{flex: 0, flexDirection: 'row-reverse', marginTop: 24, alignItems: 'center'}}>
+										<TouchableOpacity style={{flex: 0, backgroundColor: '#F6881F', borderRadius: 4}}>
+											<Text style={{marginVertical: 4, marginHorizontal: 16}}>Buy</Text>
+										</TouchableOpacity>
+										<Text style={{fontWeight: 'bold', fontSize: 12, marginHorizontal: 12}}>{harga}</Text>
+									</View>
 								</View>
 							</View>
 						</TouchableOpacity>

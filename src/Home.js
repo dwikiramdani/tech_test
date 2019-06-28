@@ -154,7 +154,7 @@ export default () => {
 						<TouchableOpacity onPress={() => { setDetail(false)}} activeOpacity={1}>
 							<View style={{margin: 20}}>
 									<View style={{flex: 0, top: 20, flexDirection: 'row', zIndex: 5}}>
-										<TouchableOpacity style={{flex: 1, alignItems: 'flex-start'}}>
+										<TouchableOpacity style={{flex: 1, alignItems: 'flex-start'}} onPress={ () => { setDetail(false) } }>
 											<Icon name={'arrow-left'} size={20}/>
 										</TouchableOpacity>
 										<TouchableOpacity style={{flex: 1, alignItems: 'flex-end'}}>

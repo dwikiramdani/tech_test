@@ -24,6 +24,7 @@ export default function Home() {
 	return (
 		<View style={styles.container}>
       {
+      // Popup Searching
       searching ?
         <Modal
           transparent={false}
@@ -36,11 +37,11 @@ export default function Home() {
       :
       <View style={{flex: 1}}>
         
+        {/* Modal Login */}
         <Modal
           transparent={false}
           animationType={"fade"}
           visible={login}
-          onRequestClose={ () => { setLogin(false) } } 
           >
             <View style={styles.container}>
               <View style={{
@@ -143,7 +144,7 @@ export default function Home() {
             </View>
           </Modal>
 
-
+        {/* Home page search bar */}
         <View style={{
           flex: 0,
           flexDirection: 'row'
@@ -175,7 +176,7 @@ export default function Home() {
             </View>
         </View>
 
-        
+        {/* Main content */}
         <View style={{
           flex: 1,
         }}>
@@ -203,7 +204,7 @@ export default function Home() {
                     marginHorizontal: 8,
                     }}
                     >
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={()=>{setHome(true), setProfile(false)}}>
                         <Icon name='arrow-left' size={16}/>
                       </TouchableOpacity>
                   </View>
@@ -222,7 +223,7 @@ export default function Home() {
           }
         </View>
 
-
+        {/* Navbar footer */}
         <View style={{
           flex: 0,
           flexDirection: 'row'

@@ -13,6 +13,6 @@ import {StyleSheet, Text, View, TextInput, CheckBox, TouchableOpacity, Button, D
 
 const Cart = props => {
   return(
-    
+    null
   )
 }
